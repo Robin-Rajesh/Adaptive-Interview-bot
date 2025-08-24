@@ -277,28 +277,5 @@ Figure 3: User satisfaction distribution based on post-interview surveys (n=150 
 - EndNote
 - RefWorks
 
-## 9. Quality Checklist
 
-### 9.1 Before Submission
-
-- [ ] All figures are clearly labeled and referenced in text
-- [ ] Tables have descriptive captions and are properly formatted
-- [ ] Citations are consistent throughout the document
-- [ ] All references are complete and properly formatted
-- [ ] Images are high resolution and clearly visible
-- [ ] Color schemes are accessible and printer-friendly
-- [ ] Page numbers and headers are correctly applied
-- [ ] Cross-references to figures/tables work correctly
-- [ ] Appendices are properly organized and labeled
-
-### 9.2 Final Review
-
-- [ ] Spelling and grammar check completed
-- [ ] Technical accuracy verified
-- [ ] Formatting consistency maintained
-- [ ] All placeholder text replaced with actual content
-- [ ] Word count meets requirements
-- [ ] PDF export tested and verified
-
----
 
