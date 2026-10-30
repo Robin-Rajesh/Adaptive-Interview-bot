@@ -1,281 +1,65 @@
-# Report Formatting Guide: Figures, Tables, and Citations
+# 🎯 Adaptive Interview Preparation Bot
 
-## 1. Figures and Diagrams
+An AI-powered mock interview app. It generates interview questions tailored to your field and experience level, scores your answers with NLP metrics, gives AI feedback, and tracks your progress over time.
 
-### 1.1 System Architecture Diagrams
+![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?logo=streamlit&logoColor=white)
+![Groq](https://img.shields.io/badge/Groq-Llama_3-F55036)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?logo=scikitlearn&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?logo=sqlite&logoColor=white)
 
-**Tools to Create Diagrams:**
-- Draw.io (free, web-based)
-- Lucidchart
-- Microsoft Visio
-- Mermaid (code-based diagrams)
+## ✨ Features
 
-**Example System Architecture Diagram Structure:**
-```
-┌─────────────────────────────────────┐
-│           Frontend Layer            │
-│  ┌─────────────┐ ┌─────────────────┐│
-│  │ Web Client  │ │ Mobile Client   ││
-│  └─────────────┘ └─────────────────┘│
-└─────────────────┬───────────────────┘
-                  │ REST API
-┌─────────────────▼───────────────────┐
-│           Backend Layer             │
-│  ┌─────────────────────────────────┐│
-│  │      Application Server         ││
-│  │  ┌───────────┐ ┌─────────────┐  ││
-│  │  │NLP Engine │ │Auth Service │  ││
-│  │  └───────────┘ └─────────────┘  ││
-│  └─────────────────────────────────┘│
-└─────────────────┬───────────────────┘
-                  │
-┌─────────────────▼───────────────────┐
-│            Data Layer               │
-│  ┌─────────────┐ ┌─────────────────┐│
-│  │  Database   │ │  File Storage   ││
-│  │  (SQLite)   │ │   (Local/Cloud) ││
-│  └─────────────┘ └─────────────────┘│
-└─────────────────────────────────────┘
+- **User profiles** with domain and experience level
+- **Adaptive question generation** using Llama 3 on Groq. Difficulty increases as the session goes on, and template questions are used if the API is unavailable.
+- **Follow-up questions** based on your previous answer
+- **Answer evaluation** that combines:
+  - semantic similarity (TF-IDF)
+  - expected keyword coverage
+  - answer structure
+  - ROUGE, BLEU and F1 scores
+- **AI-written feedback** with strengths and areas to improve
+- **Analytics dashboard** with Plotly charts: NLP scores, baseline comparison, metric breakdown and performance analysis
+- **Session history** stored in SQLite
+
+Supported domains: Software Engineering, Data Science, Product Management, Marketing, Finance, Human Resources, Sales and Design.
+
+## 🚀 Getting Started
+
+```bash
+cd interview_bot
+pip install -r requirements.txt
+cp .env.template .env        # then add your GROQ_API_KEY
+python run.py                # checks setup, then starts the Streamlit app
 ```
 
-### 1.2 Data Flow Diagrams
+Or start the app directly with `streamlit run main.py`. You can get a free Groq API key at [console.groq.com](https://console.groq.com/).
 
-**Example Interview Processing Flow:**
-```
-User Input → Text Preprocessing → NLP Analysis → Scoring → Response Generation → Display Results
-    ↓              ↓                  ↓           ↓              ↓               ↓
-Database     Pattern Matching    Intent Recog.  Evaluation    Template Fill   UI Update
-Logging      Tokenization        Entity Extr.   Algorithm     Logic          Feedback
-```
+## ⚙️ Configuration
 
-### 1.3 Database Schema Diagrams
+Settings live in `interview_bot/config/settings.py`:
 
-Use Entity Relationship Diagrams (ERD) to show table relationships:
+| Setting | Default |
+|---|---|
+| `GROQ_MODEL` | `llama3-8b-8192` |
+| `SIMILARITY_THRESHOLD` | `0.7` |
+| `MAX_QUESTIONS_PER_SESSION` | `10` |
 
-```
-[Users] 1─────∞ [Interviews] 1─────∞ [Responses]
-   │                │                    │
-   │                │                    │
-   ▼                ▼                    ▼
-user_id          interview_id        response_id
-username         user_id (FK)        interview_id (FK)
-email            position            question_id (FK)
-role             status              response_text
-created_at       score               score
-                 created_at          timestamp
-```
-
-## 2. Tables
-
-### 2.1 Performance Results Table
-
-| Metric | Baseline | Target | Achieved | Improvement | Status |
-|--------|----------|--------|----------|-------------|---------|
-| Response Accuracy | 65% | >85% | 87% | +22% | ✅ Met |
-| Processing Time | 3.2s | <2s | 1.5s | -53% | ✅ Met |
-| Memory Usage | 512MB | <256MB | 198MB | -61% | ✅ Met |
-| Concurrent Users | 10 | >50 | 75 | +650% | ✅ Met |
-
-### 2.2 Feature Comparison Table
-
-| Feature | Our System | HireVue | Pymetrics | Mya |
-|---------|------------|---------|-----------|-----|
-| Natural Language Processing | Advanced | Basic | N/A | Advanced |
-| Real-time Feedback | Yes | No | Yes | Yes |
-| Custom Questions | Yes | Yes | No | Limited |
-| Bias Detection | Partial | Yes | Yes | No |
-| Cost (per interview) | $0.50 | $15 | $25 | $8 |
-| Setup Time | 1 day | 2 weeks | 1 week | 3 days |
-
-### 2.3 Test Results Table
-
-| Test Case | Input | Expected Output | Actual Output | Pass/Fail |
-|-----------|-------|-----------------|---------------|-----------|
-| TC001 | "I have 5 years of Python experience" | High technical score | 8.5/10 | Pass |
-| TC002 | "I work well in teams" | Medium behavioral score | 7.2/10 | Pass |
-| TC003 | Empty response | Error handling | "Please provide a response" | Pass |
-
-## 3. Charts and Graphs
-
-### 3.1 Performance Over Time (Line Chart)
+## 📂 Project Structure
 
 ```
-Accuracy Improvement Over Development Iterations
-
-  100% ┼                                    ●
-       │                               ●
-   90% ┼                          ●
-       │                     ●
-   80% ┼                ●
-       │           ●
-   70% ┼      ●
-       │ ●
-   60% ┼
-       └─────────────────────────────────────
-       Iter1  Iter2  Iter3  Iter4  Iter5  Iter6
+interview_bot/
+├── main.py                      # Streamlit app (home, profile, interview, analytics, settings)
+├── run.py                       # Startup checks and launcher
+├── config/settings.py           # Configuration
+├── core/
+│   ├── question_generator.py    # LLM and template-based question generation
+│   ├── answer_evaluator.py      # Scoring and AI feedback
+│   ├── conversation_manager.py  # Interview session flow
+│   └── user_manager.py          # Profiles and recommendations
+├── database/models.py           # SQLite tables and queries
+├── utils/evaluation_metrics.py  # ROUGE / BLEU helpers
+└── test_advanced_evaluation.py  # Evaluation tests
 ```
 
-### 3.2 User Satisfaction (Bar Chart)
-
-```
-User Satisfaction Ratings
-
-5 Stars ████████████████████████████████ 45%
-4 Stars ████████████████████████ 30%
-3 Stars ███████████ 15%
-2 Stars ████ 6%
-1 Star  ██ 4%
-```
-
-### 3.3 Response Distribution (Pie Chart)
-
-```
-Interview Question Categories
-
-Technical Skills: 40%
-Behavioral: 25%
-Experience: 20%
-Problem Solving: 15%
-```
-
-## 4. Code Listings
-
-### 4.1 Key Algorithm Implementation
-
-```python
-def evaluate_response(self, question, answer):
-    """
-    Evaluate candidate response using NLP techniques
-    
-    Args:
-        question (str): The interview question
-        answer (str): Candidate's response
-        
-    Returns:
-        dict: Evaluation results with score and feedback
-    """
-    # Preprocess the response
-    processed_answer = self.preprocess_text(answer)
-    
-    # Extract key features
-    keywords = self.extract_keywords(processed_answer)
-    sentiment = self.analyze_sentiment(processed_answer)
-    
-    # Calculate score based on multiple factors
-    score = self.calculate_score({
-        'keywords': keywords,
-        'sentiment': sentiment,
-        'length': len(processed_answer),
-        'coherence': self.check_coherence(processed_answer)
-    })
-    
-    return {
-        'score': score,
-        'feedback': self.generate_feedback(score, keywords),
-        'details': {
-            'keywords_found': keywords,
-            'sentiment_score': sentiment,
-            'coherence_rating': self.check_coherence(processed_answer)
-        }
-    }
-```
-
-## 5. Citations and References
-
-
-**Websites/Online Resources:**
-```
-OpenAI. (2023). GPT-4 technical report. Retrieved from https://openai.com/research/gpt-4
-```
-
-**Software/Tools:**
-```
-Python Software Foundation. (2023). Python Language Reference (Version 3.11) [Computer software]. https://www.python.org/
-```
-
-
-## 6. Figure and Table Captions
-
-### 6.1 Figure Captions
-
-- Always place captions below figures
-- Use "Figure X:" followed by descriptive text
-- Include enough detail for readers to understand without referring to the main text
-
-**Examples:**
-```
-Figure 1: System architecture diagram showing the three-layer design with frontend clients, backend processing services, and data storage components.
-
-Figure 2: Interview accuracy comparison across different question categories, showing improvement over six development iterations.
-
-Figure 3: User satisfaction distribution based on post-interview surveys (n=150 respondents).
-```
-
-### 6.2 Table Captions
-
-- Always place captions above tables
-- Use "Table X:" followed by descriptive text
-
-## 7. Formatting Guidelines
-
-### 7.1 General Formatting
-
-- Use consistent fonts (Times New Roman 12pt or Arial 11pt)
-- 1.5 line spacing for body text
-- 1-inch margins on all sides
-- Page numbers in bottom right corner
-- Headers with chapter/section names
-
-### 7.2 Image Quality
-
-- Minimum 300 DPI for printed reports
-- PNG format for diagrams and screenshots
-- JPEG for photographs
-- Vector formats (SVG, PDF) when possible for scalability
-
-### 7.3 Color Usage
-
-- Use high contrast colors for accessibility
-- Avoid red/green combinations (colorblind friendly)
-- Consistent color scheme throughout the document
-- Black and white printer-friendly versions
-
-## 8. Tools and Resources
-
-### 8.1 Diagram Creation Tools
-
-**Free:**
-- Draw.io (now diagrams.net)
-- Mermaid (code-based)
-- PlantUML
-- Google Drawings
-
-**Paid:**
-- Lucidchart
-- Microsoft Visio
-- OmniGraffle (Mac)
-
-### 8.2 Chart Creation Tools
-
-**Python Libraries:**
-- Matplotlib
-- Seaborn
-- Plotly
-- Bokeh
-
-**Excel/Google Sheets:**
-- Built-in charting tools
-- Easy export to images
-
-### 8.3 Citation Management
-
-**Free:**
-- Zotero
-- Mendeley Free
-
-**Paid:**
-- EndNote
-- RefWorks
-
-
-
+`capstone_report.md` and `report_formatting_guide.md` contain the project report template.
